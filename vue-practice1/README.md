@@ -20,8 +20,11 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-1.使用less预处理语言
-  * 引用全局less
+
+##### 1.使用less预处理语言  #####
+
+  ** 引用全局less  **
+  ```
   utils.js---------------------------------
     exports.cssLoaders中添加方法 
       function resolveResource(name) {
@@ -53,3 +56,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
           ...
           less: generateSassResourceLoader(),
         }
+ ```
+ 
+ ##### 2.使用axios做登录拦截  #####
+ 
+ ##### 3.父子组件通信实现多选操作  #####
