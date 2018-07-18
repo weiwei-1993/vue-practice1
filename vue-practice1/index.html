@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>首投理财-网贷投资，国企控股平台</title>
+    <link rel="stylesheet" href="static/reset.css">
+  </head>
+  <script>
+    function setFont () {
+      let deviceWidth = document.documentElement.clientWidth || document.body.clientWidth;
+      if(deviceWidth > 750){
+        deviceWidth = 750
+      }
+      document.documentElement.style.fontSize = Math.floor(deviceWidth / 7.5) + 'px'
+    }
+    setFont()
+    window.onresize = setFont
+    /*window.onload = function(){
+      getRem(750)
+    };
+    window.onresize = function(){
+      getRem(750)
+    };
+    function getRem(pwidth,prem){
+      var html = document.getElementsByTagName("html")[0];
+      var oWidth = document.body.clientWidth || document.documentElement.clientWidth;
+      if (oWidth > 750) {
+        oWidth = 750;
+      }
+      document.documentElement.style.fontSize = oWidth/7.5 + "px";
+    }*/
+  </script>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
