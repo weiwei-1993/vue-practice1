@@ -195,6 +195,7 @@ export default {
   background: rgba(0,0,0,0.4);
   left: 0;
   top: 0;
+  z-index: 100;
   .table{
     width: 90%;
     height: 70%;

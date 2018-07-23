@@ -2,7 +2,7 @@
     <div class="headerTop">
       <div class="common-head">
         <i class="back"></i>
-        <p>{{title}}</p>
+        <p @click="nextPage">{{title}}</p>
       </div>
       <div class="search">
         <input type="text" placeholder="搜索" v-model="searchText">
@@ -21,44 +21,63 @@
             <td>{{item.content}}</td>
           </tr>
         </table>
+        <!--<p v-for="item in logList" :key="item.id" style="line-height: 3rem;">-->
+          <!--{{item.name}}-->
+        <!--</p>-->
+        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
       </div>
     </div>
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 export default {
   name: 'myaccountHome',
   data () {
     return {
-      title: '我的',
+      title: '下拉加载更多',
       logList: [],
-      searchText: ''
+      searchText: '',
+      currentPage: 0
     }
   },
   created: function () {
+    // :需要 total，需要 pagesize:     total是总共多少条，pagesize 是一页几条数据
     const token = sessionStorage.getItem('token')
     if (token === null || token === undefined) {
       this.$router.push('/login')
     } else {
-      const _this = this
-      this.axios.post('logs/index', {})
-        .then(function (res) {
-          if (res.code === 1) {
-            _this.logList = res.data.data
-          }
-        })
+      // this.postRuest({pagesize: 10, page: this.currentPage})
     }
   },
   methods: {
-    search: function () {
+    postRuest ($state) {
       const _this = this
-      this.axios.post('logs/index', {keyword: _this.searchText})
+      this.axios.post('logs/index', {pagesize: 10, page: this.currentPage})
         .then(function (res) {
           if (res.code === 1) {
-            _this.logList = res.data.data
+            res.data.data.forEach((item) => {
+              _this.logList.push(item)
+            })
+            $state.loaded()
           }
         })
+    },
+    search: function () {
+      const _this = this
+      this.postRuest({keyword: _this.searchText})
+    },
+    nextPage () {
+      this.currentPage++
+      this.postRuest({pagesize: 10, page: this.currentPage})
+    },
+    infiniteHandler ($state) {
+      this.currentPage++
+      this.postRuest($state)
     }
+  },
+  components: {
+    InfiniteLoading
   }
 }
 </script>

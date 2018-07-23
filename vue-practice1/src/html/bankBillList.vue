@@ -1,5 +1,13 @@
 <template>
-   <div>bankBillList</div>
+   <div>
+     <div class="list">
+       <ul>
+         <li>
+           <span></span>
+         </li>
+       </ul>
+     </div>
+   </div>
 </template>
 
 <script>

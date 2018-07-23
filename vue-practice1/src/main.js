@@ -7,13 +7,19 @@ import router from './router'
 import global from './html/global'
 import axios from 'axios'
 import store from './store'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+// import Mint from 'mint-ui'
+// import 'mint-ui/lib/style.css'
 
+// Vue.use(Mint)
+Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.axios = axios
 Vue.prototype.global = global
 axios.defaults.baseURL = 'https://app1.shiyujia.com/answer/'
 // http request 请求拦截器，有token值则配置上token值
-const token = sessionStorage.getItem('token')
+let token = sessionStorage.getItem('token')
 axios.interceptors.request.use(
   config => {
     config.headers['X-Requested-With'] = 'XMLHttpRequest'
@@ -33,7 +39,7 @@ axios.interceptors.request.use(
   err => {
     return Promise.reject(err)
   })
-// http response 服务器响应拦截器，这里拦截401错误，并重新跳入登页重新获取token
+// http response 服务器响应拦截器，这里拦截错误，并重新跳入登页重新获取token
 axios.interceptors.response.use(
   response => {
     if (response.data.code === 3) {

@@ -1,9 +1,13 @@
 <template>
-  <div class="find">
+  <div class="find headerTop">
     <div class="common-head">
       <i class="back"></i>
       <p>{{title}}</p>
     </div>
+
+    <!--父子组件传值-->
+    <div class="div-block"></div>
+    <h2 class="title">1.父子组件传值</h2>
     <div class="input">
       <div class="left">提问者：</div>
       <div class="right">
@@ -18,6 +22,19 @@
         <add-question-people v-on:add="addPeople" :id="idList"></add-question-people>
       </div>
     </div>
+
+    <!--图片上传-->
+    <div class="div-block"></div>
+    <h2 class="title">2.图片上传</h2>
+    <el-upload
+      class="avatar-uploader"
+      action="https://app1.shiyujia.com/admin/uploads/answer"
+      :show-file-list="false"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
   </div>
 </template>
 
@@ -28,7 +45,9 @@ export default {
   data () {
     return {
       people: [],
-      title: '发现'
+      title: '小功能',
+      imageUrl: '',
+      url: 'https://app1.shiyujia.com/answer/admin/uploads/answer'
     }
   },
   components: {
@@ -65,6 +84,24 @@ export default {
           break
         }
       }
+    },
+    handleAvatarSuccess (res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error({
+          message: '上传头像图片只能是 JPG 格式!',
+          customClass: 'w-error'
+        })
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
     }
   },
   computed: {
@@ -79,15 +116,23 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 .common-head{
   .back{
     background-image: url('./../image/common/return.png');
   }
 }
+.title{
+  text-indent: 0.3rem;
+  line-height: 1rem;
+  text-align: left;
+  background: #fff;
+  font-size: 0.3rem;
+}
 .input{
   display: flex;
-  margin-top: 1rem;
+  padding: 0.5rem 0;
+  background: #fff;
   .left{
     width: 1.5rem;
     line-height: 0.7rem;
@@ -126,5 +171,34 @@ export default {
       }
     }
   }
+}
+.avatar-uploader{
+  background: #fff;
+  .el-upload{
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    &:hover{
+      border-color: #409EFF;
+    }
+  }
+  &-icon{
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.w-error{
+  top: 0.8rem;
 }
 </style>
